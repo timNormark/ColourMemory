@@ -1,0 +1,63 @@
+﻿@model GameBoardViewModel
+@{
+    Model.Cards = Model.Cards.OrderBy(c => c.Row).ThenBy(c => c.Column).ToList();
+    int i = 0;
+}
+
+<div class="div-game-board">
+    <div>
+        <h3>Score: @Model.Score</h3>
+    </div>
+    <form method="post" class="form-game-board">
+        <input hidden asp-for="@Model.NumberOfRows" />
+        <input hidden asp-for="@Model.NumberOfColumns" />
+        <input hidden asp-for="@Model.Score" />
+        <input hidden class="round-completed" value="@Model.RoundCompleted.ToString()" />
+
+        @for (int rowCount = 0; rowCount < Model.NumberOfRows; rowCount++)
+        {
+            <div class="row">
+                @for (int colCount = 0; colCount < Model.NumberOfColumns; colCount++)
+                {
+                    <div class="col border">
+                        @if (i < Model.Cards.Count && Model.Cards[i].Row == rowCount && Model.Cards[i].Column == colCount)
+                        {
+                            string colour = Model.Cards[i].IsCurrentlyChosen ? Model.Cards[i].Colour.ToString() : "Grey";
+
+                            <input hidden asp-for="@Model.Cards[i].Colour" />
+                            <input hidden asp-for="@Model.Cards[i].Row" />
+                            <input hidden asp-for="@Model.Cards[i].Column" />
+                            <input hidden name="Cards[@i].IsCurrentlyChosen" value="@Model.Cards[i].IsCurrentlyChosen.ToString()" />
+
+                            <button type="button"
+                                    asp-controller="Game"
+                                    asp-action="MakeMove"
+                                    asp-route-column="@Model.Cards[i].Column"
+                                    asp-route-row="@Model.Cards[i].Row"
+                                    style="background-color:@colour"
+                                    class="game-card btn btn-block p-5">
+                            </button>
+                            i++;
+                        }
+                        else
+                        {
+                            <button type="button"
+                                    class="btn btn-block p-5">
+                            </button>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </form>
+
+    @if (!Model.Cards.Any())
+    {
+        <div class="p-5 text-center">
+            <h1>You won!!!</h1>
+            <button class="btn btn-primary" onClick="history.go(0)">Play again</button>
+        </div>
+    }
+</div>
+
+<script asp-append-version="true" src="~/js/game.js" defer></script>

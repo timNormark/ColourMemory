@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Services\" />
+    <None Remove="Services\NewGameService\" />
+    <None Remove="Services\MakeMoveService\" />
+    <None Remove="Models\" />
+    <None Remove="Services\ResetRoundService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
+    <Folder Include="Services\NewGameService\" />
+    <Folder Include="Services\MakeMoveService\" />
+    <Folder Include="Models\" />
+    <Folder Include="Services\ResetRoundService\" />
+  </ItemGroup>
+</Project>
